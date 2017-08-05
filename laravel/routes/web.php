@@ -18,17 +18,21 @@ use App\User;
   ->where('lastname','[a-zA-Z]+');*/
   //si può fare anche con un solo where
   
-Route::get('/albums', function(){
-	return User::all(); //se si fa User::truncate() si cancellano tutti i dati in user
-});
+Route::get('/albums', "AlbumsController@index");
+Route::get('/albums/{id}/edit','AlbumsController@edit');
 
-Route::get('/{name?}/{lastname?}/{age?}', function ($name = '', $lastname='', $age=0) {
+//laravel usa i nomi delle azioni per fare una determinata cosa
+Route::delete('/albums/{id}','AlbumsController@delete');
+Route::patch('/albums/{id}','AlbumsController@store');
+Route::get('/albums/{id}','AlbumsController@show');
+
+/*Route::get('/{name?}/{lastname?}/{age?}', function ($name = '', $lastname='', $age=0) {
 	//si potrebbe anche ritornare una view
     return '<h1>Ciao ' . $name . ' '.$lastname .', you are '.$age.' years old</h1>';
 })->where([
   		'name' => '[a-zA-Z]+',
   		'lastname' => '[a-zA-Z]+',
   		'age' => '[0-9]{1,3}'
-  	]);
+  	]);*/
 
 

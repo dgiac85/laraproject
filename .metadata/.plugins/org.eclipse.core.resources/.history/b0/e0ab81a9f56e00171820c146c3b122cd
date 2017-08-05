@@ -1,0 +1,18 @@
+<?php
+/*
+Author:Giacomo Delfini
+Date:22 lug 2017
+Time:17:12:34
+File:edit.blade.php
+*/
+?>
+
+@extends('templates.default')
+@section('content')
+<h1>Update Album</h1>
+<div class="form-group">
+	<label for=""></label>
+	<input type="text" name="" id="" class="form-control" placeholder="">
+	<small id="helpid" class="text-muted">Help text</small>
+</div>
+@endsection
