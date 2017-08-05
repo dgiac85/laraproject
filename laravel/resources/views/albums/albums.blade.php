@@ -12,6 +12,11 @@ File:albums.blade.php
 @extends('templates.default')
 @section('title',$title)
 @section('content')
+@if(session()->has('message'))
+	@component('components.alert-info')
+	{{session()->get('message')}}
+	@endcomponent
+@endif	
 <form>
 	<input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
 	<ul class="list-group">
@@ -32,6 +37,8 @@ File:albums.blade.php
 	@parent <!--sto prendendo il footer dal template padre ovvero default.blade.php-->
 	<script>
 	$(document).ready(function(){
+		$('div.alert').fadeOut(3000);
+		
 		$('ul').on('click','a', function(element){ //solo click su elementi di tipo 'a'
 		
 	

@@ -24,6 +24,7 @@ class AlbumsController extends Controller
     		$sql .= " AND album_name=:album_name";
     		//$sql .= " AND album_name=:album_name";
     	}
+    	$sql.=' ORDER BY id desc';
     	//IMPORTANTE FILTRARE I DATI IN ARRIVO ALLA GET in modo da non avere SQL INJECTION
     	//dd($sql); //il dump ferma la query
     	
@@ -65,6 +66,22 @@ class AlbumsController extends Controller
     	return view('albums.edit',['album'=>$album[0],'title'=>'Pagina Edit Album']);
     }
     
+    public function create(){
+    	return view('albums.createalbum',['title'=>'Pagina Create Album']);
+    }
+    
+    public function save(){
+    	$data= request()->only(['name','description']); 
+    	$data['user_id']=1; 
+    	$sql='INSERT INTO albums (album_name,description,user_id)';
+    	$sql.=' VALUES(:name, :description, :user_id)';
+    	
+    	$res=DB::insert($sql,$data);
+    	$messaggio = $res ? 'Album '.$data['name'].' creato!':'Album '.$data['name'].' non creato!';
+    	session()->flash('message',$messaggio);
+    	return redirect()->route('albums'); //è una response non è una redirect vera e propria
+    }
+    
     public function store($id,Request $req){
     	$data = request()->only(['name','description']);
     	
@@ -75,7 +92,9 @@ class AlbumsController extends Controller
  
     	$res=DB::update($sql,$data);
     	
-    	dd($res);
+    	$messaggio = $res ? 'Album con id '.$id.' aggiornato!':'Album con id '.$id.' non aggiornato!'; 
+    	session()->flash('message',$messaggio);
+    	return redirect()->route('albums'); //è una response non è una redirect vera e propria
     }
     
 }
