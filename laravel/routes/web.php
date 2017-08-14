@@ -28,6 +28,17 @@ Route::patch('/albums/{id}','AlbumsController@store');
 Route::post('/albums', "AlbumsController@save")->name('album.save');
 Route::get('/albums/{id}','AlbumsController@show');
 
+
+Route::get('usernoalbums',function(){ //utilizzata una funzione anonima
+	$usernoalbum=DB::table('users as u')
+	->leftJoin('albums as a','u.id','a.user_id')
+	->select('u.id','email','name','album_name')
+	->whereNull('album_name')
+	->get();
+	
+	return $usernoalbum;
+});
+
 /*Route::get('/{name?}/{lastname?}/{age?}', function ($name = '', $lastname='', $age=0) {
 	//si potrebbe anche ritornare una view
     return '<h1>Ciao ' . $name . ' '.$lastname .', you are '.$age.' years old</h1>';

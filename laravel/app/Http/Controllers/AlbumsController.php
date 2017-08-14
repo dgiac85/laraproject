@@ -11,7 +11,7 @@ class AlbumsController extends Controller
     //index
     public function index(Request $request){
     	
-    	$sql='select * from albums where 1=1'; //si ritorna 1=1 nel caso non si passano valori
+    	/*GREZZE$sql='select * from albums where 1=1'; //si ritorna 1=1 nel caso non si passano valori
     	$where=[];
     	if ($request->has('id')){
     		$where['id']=$request->get('id');
@@ -36,17 +36,40 @@ class AlbumsController extends Controller
     	$albums=DB::select($sql,$where);
     	//il primo parametro è il nome della view che automaticamente è albums.blade.php
     	//però dobbiamo andare a prenderlo dalla cartella
-    	return view('albums.albums',['title'=>'Pagina Album','albums'=>$albums]);
+    	return view('albums.albums',['title'=>'Pagina Album','albums'=>$albums]);*/
     	
+    	//#####################################################################
+    	//utilizziamo il query builder
+    	//usiamo la facade DB
+    	
+    	$queryBuilder=DB::table('albums')->orderBy('id','DESC');
+    	if ($request->has('id')){
+    		$queryBuilder->where('id','=',$request->input('id'));
+    	}
+    	if ($request->has('album_name')){
+    		$queryBuilder->where('album_name','like','%'.$request->input('album_name').'%');
+    	}
+    	
+    	$albums=$queryBuilder->get();
+    	return view('albums.albums',['title'=>'Pagina Album','albums'=>$albums]);
     	
     }
     
     //FUNZIONE DI CANCELLAZIONE
     public function delete($id){
     	
-    	$sql="DELETE from albums where id=:id";
+    	/*GREZZE$sql="DELETE from albums where id=:id";
     	return DB::delete($sql,['id'=>$id]); //se tutto va bene ritorna 1
     	//return redirect()->back();
+    	*/
+    	
+    	//#####################################################################
+    	//utilizziamo il query builder
+    	//usiamo la facade DB
+    	 
+    	$res=DB::table('albums')->where('id',$id)->delete(); //ricorda è una chiamata ad un metodo statico
+    	
+    	return $res;
     }
     
     //FUNZIONE DI VISUALIZZAZIONE
@@ -72,18 +95,32 @@ class AlbumsController extends Controller
     
     public function save(){
     	$data= request()->only(['name','description']); 
-    	$data['user_id']=1; 
+    	/*$data['user_id']=1; 
     	$sql='INSERT INTO albums (album_name,description,user_id)';
     	$sql.=' VALUES(:name, :description, :user_id)';
     	
     	$res=DB::insert($sql,$data);
+    	
+    	*/
+    	//#####################################################################
+    	//utilizziamo il query builder
+    	//usiamo la facade DB
+    	
+    	$res = DB::table('albums')->insert(
+    			[
+    					'album_name'=>request()->input('name'),
+    					'description'=>request()->input('description'),
+    					'user_id'=> 1 //fino all'autenticazione
+    			]
+    	); //si potrebbe passare anche un array di array per inserire diversi record
+    	
     	$messaggio = $res ? 'Album '.$data['name'].' creato!':'Album '.$data['name'].' non creato!';
     	session()->flash('message',$messaggio);
     	return redirect()->route('albums'); //è una response non è una redirect vera e propria
     }
     
     public function store($id,Request $req){
-    	$data = request()->only(['name','description']);
+    	/*$data = request()->only(['name','description']);
     	
     	$data['id']=$id;
     	
@@ -91,6 +128,17 @@ class AlbumsController extends Controller
     	$sql.=' WHERE id=:id';
  
     	$res=DB::update($sql,$data);
+    	*/
+    	//#####################################################################
+    	//utilizziamo il query builder
+    	//usiamo la facade DB
+    	
+    	$res = DB::table('albums')->where('id',$id)->update(
+    		[
+    				'album_name'=>request()->input('name'),
+    				'description'=>request()->input('description')
+    		]		
+    	);
     	
     	$messaggio = $res ? 'Album con id '.$id.' aggiornato!':'Album con id '.$id.' non aggiornato!'; 
     	session()->flash('message',$messaggio);

@@ -96,3 +96,38 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.
 
 !ENTRY org.eclipse.core.net 1 0 2017-08-05 12:09:41.984
 !MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2017-08-14 14:39:35.571 -----------------------------------------------
+eclipse.buildId=4.6.1.M20160907-1200
+java.version=1.8.0_40
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=it_IT
+Framework arguments:  -product org.eclipse.epp.package.php.product -keyring /Users/Giacomo/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.php.product -keyring /Users/Giacomo/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2017-08-14 14:39:41.803
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.php.ui 4 10001 2017-08-14 14:44:33.174
+!MESSAGE PHP ui plugin internal error
+!STACK 1
+org.eclipse.dltk.core.ModelException: $albums [in index [in AlbumsController [in App\Http\Controllers [in AlbumsController.php [in app/Http/Controllers [in <project root> [in laravel]]]]]]] does not exist
+	at org.eclipse.dltk.internal.core.ModelElement.newNotPresentException(ModelElement.java:275)
+	at org.eclipse.dltk.internal.core.ModelElement.openWhenClosed(ModelElement.java:210)
+	at org.eclipse.dltk.internal.core.ModelElement.getElementInfo(ModelElement.java:185)
+	at org.eclipse.dltk.internal.core.ModelElement.getElementInfo(ModelElement.java:167)
+	at org.eclipse.dltk.internal.core.Member.getFlags(Member.java:52)
+	at org.eclipse.php.internal.ui.documentation.PHPDocumentationProvider.isFinal(PHPDocumentationProvider.java:260)
+	at org.eclipse.php.internal.ui.documentation.PHPDocumentationProvider.getConstantValue(PHPDocumentationProvider.java:223)
+	at org.eclipse.php.internal.ui.documentation.PHPDocumentationProvider.getInfo(PHPDocumentationProvider.java:90)
+	at org.eclipse.dltk.ui.documentation.ScriptDocumentationAccess$2.getInfo(ScriptDocumentationAccess.java:158)
+	at org.eclipse.dltk.ui.documentation.ScriptDocumentationAccess.merge(ScriptDocumentationAccess.java:88)
+	at org.eclipse.dltk.ui.documentation.ScriptDocumentationAccess.getHTMLContentReader(ScriptDocumentationAccess.java:150)
+	at org.eclipse.dltk.ui.text.completion.ProposalInfo.getHTMLContentReader(ProposalInfo.java:183)
+	at org.eclipse.dltk.ui.text.completion.ProposalInfo.extractScriptdoc(ProposalInfo.java:154)
+	at org.eclipse.dltk.ui.text.completion.ProposalInfo.computeInfo(ProposalInfo.java:94)
+	at org.eclipse.dltk.ui.text.completion.ProposalInfo.getInfo(ProposalInfo.java:71)
+	at org.eclipse.dltk.ui.text.completion.AbstractScriptCompletionProposal.getAdditionalProposalInfo(AbstractScriptCompletionProposal.java:489)
+	at org.eclipse.jface.text.contentassist.AdditionalInfoController$Timer$2$1.run(AdditionalInfoController.java:113)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 org.eclipse.dltk.core 4 969 2017-08-14 14:44:33.176
+!MESSAGE $albums [in index [in AlbumsController [in App\Http\Controllers [in AlbumsController.php [in app/Http/Controllers [in <project root> [in laravel]]]]]]] does not exist
