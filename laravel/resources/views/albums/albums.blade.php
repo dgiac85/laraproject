@@ -22,8 +22,12 @@ File:albums.blade.php
 	<ul class="list-group">
 	@foreach($albums as $album)
 		<li class="list-group-item justify-content-between">
+			@if($album->album_thumb)
+					<img src="{{$album->album_thumb}}" title="{{$album->album_thumb}}" alt="{{$album->album_thumb}}">
+				@endif
 			<p>{{$album->id}} {{$album->album_name}}</p>
 			<div>
+				
 				<a href="/albums/{{$album->id}}/edit" class="btn btn-primary">Update</a>
 				<a id="delete" href="/albums/{{$album->id}}" class="btn btn-danger">Delete</a>
 			</div>

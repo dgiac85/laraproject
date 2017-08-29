@@ -12,8 +12,21 @@
 */
 
 use App\User;
+
 use App\Models\Album;
 use App\Models\Photo;
+
+
+$values=[
+		'abstract',
+		'animals',
+		'business',
+		'cats',
+		'city',
+		'technics',
+		'sports',
+		'transport',
+];
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
@@ -27,26 +40,18 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Models\Album::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Album::class, function (Faker\Generator $faker) use($values){
 
 	return [
 			'album_name' => $faker->name,
 			'description' => $faker->text(128),
 			'user_id' => User::inRandomOrder()->first()->id, //inRandomOrder() si chiama staticamente. è un metodo statico che ha accesso al query builder. Il query builder poi ritorna il Singleton utile a chiamare i metodi
+			'album_thumb'=>$faker->imageUrl(120,120,$faker->randomElement($values)),
 	];
 });
 
-$factory->define(App\Models\Photo::class, function (Faker\Generator $faker) {
-	$values=[
-		'abstract',
-		'animals',
-		'business',
-		'cats',
-		'city',
-		'technics',
-		'sports',
-	    'transport',			
-	];
+$factory->define(App\Models\Photo::class, function (Faker\Generator $faker) use($values) {
+	
 
 	return [
 			'album_id' => Album::inRandomOrder()->first()->id,

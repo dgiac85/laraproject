@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Album extends Model {
 	//albums
-	//protected $table= 'Album'; nel caso la classe si chiama in modo differente
+	protected $table= 'albums'; //nel caso la classe si chiama in modo differente La tabella in mysql si chiama albums
+	
+	protected $fillable = ['album_name','description','user_id'];
 	 
 	
 }

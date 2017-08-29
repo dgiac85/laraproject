@@ -11,7 +11,7 @@ File:edit.blade.php
 @section('title',$title)
 @section('content')
 <h1>Update Album</h1>
-<form action="/albums/{{$album->id}}" method="POST">
+<form action="/albums/{{$album->id}}" method="POST" enctype="multipart/form-data">
 {{csrf_field()}}
 <input type="hidden" name="_method" value="PATCH">
 <div class="form-group">
@@ -24,6 +24,13 @@ File:edit.blade.php
 	<textarea name="description" id="description" class="form-control"  placeholder="Description">{{$album->description}}
 	</textarea>
 </div>
+@if($album->album_thumb)
+	<div class="form-group">
+		<label for="">Thumbnail</label>
+		<input type="file" name="album_thumb" id="album_thumb" class="form-control">
+		<img src="{{$album->album_thumb}}" title="{{$album->album_thumb}}" alt="{{$album->album_thumb}}">
+	</div>
+@endif
 <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 @endsection

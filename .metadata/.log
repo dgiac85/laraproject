@@ -131,3 +131,16 @@ org.eclipse.dltk.core.ModelException: $albums [in index [in AlbumsController [in
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
 !SUBENTRY 1 org.eclipse.dltk.core 4 969 2017-08-14 14:44:33.176
 !MESSAGE $albums [in index [in AlbumsController [in App\Http\Controllers [in AlbumsController.php [in app/Http/Controllers [in <project root> [in laravel]]]]]]] does not exist
+!SESSION 2017-08-29 14:49:57.547 -----------------------------------------------
+eclipse.buildId=4.6.1.M20160907-1200
+java.version=1.8.0_40
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=it_IT
+Framework arguments:  -product org.eclipse.epp.package.php.product -keyring /Users/Giacomo/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.php.product -keyring /Users/Giacomo/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2017-08-29 14:50:04.526
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.core.resources 2 10035 2017-08-29 16:31:22.510
+!MESSAGE The workspace will exit with unsaved changes in this session.

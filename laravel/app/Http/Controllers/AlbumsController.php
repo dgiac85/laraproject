@@ -42,7 +42,9 @@ class AlbumsController extends Controller
     	//utilizziamo il query builder
     	//usiamo la facade DB
     	
-    	$queryBuilder=DB::table('albums')->orderBy('id','DESC');
+    	//$queryBuilder=DB::table('albums')->orderBy('id','DESC');
+    	//con eloquent
+    	$queryBuilder=Album::orderBy('id','DESC');
     	if ($request->has('id')){
     		$queryBuilder->where('id','=',$request->input('id'));
     	}
@@ -67,9 +69,13 @@ class AlbumsController extends Controller
     	//utilizziamo il query builder
     	//usiamo la facade DB
     	 
-    	$res=DB::table('albums')->where('id',$id)->delete(); //ricorda è una chiamata ad un metodo statico
+    	//$res=DB::table('albums')->where('id',$id)->delete(); //ricorda è una chiamata ad un metodo statico
+    	//Eloquent metodo1
+    	//$res=Album::where('id',$id)->delete();
+    	//Eloquent metodo 2
+    	$res=Album::find($id)->delete();
     	
-    	return $res;
+    	return ''.$res; //ritorniamo un valore di tipo stringa
     }
     
     //FUNZIONE DI VISUALIZZAZIONE
@@ -83,10 +89,15 @@ class AlbumsController extends Controller
     //FUNZIONE DI UPDATE
     public function edit($id){
     
-    	$sql="SELECT id,album_name, description from albums where id=:id";
+    	/*$sql="SELECT id,album_name, description from albums where id=:id";
     	$album=DB::select($sql,['id'=>$id]);
-    
     	return view('albums.edit',['album'=>$album[0],'title'=>'Pagina Edit Album']);
+    	*/
+    	
+    	//con Eloquent
+    	$album=Album::find($id);
+    
+    	return view('albums.edit',['album'=>$album,'title'=>'Pagina Edit Album']);
     }
     
     public function create(){
@@ -106,13 +117,32 @@ class AlbumsController extends Controller
     	//utilizziamo il query builder
     	//usiamo la facade DB
     	
-    	$res = DB::table('albums')->insert(
+    	//$res = DB::table('albums')->insert(
+    	//eloquent
+    	//eloquent metodo 1 senza usare $fillable
+    	/*$res=Album::insert(
     			[
     					'album_name'=>request()->input('name'),
     					'description'=>request()->input('description'),
     					'user_id'=> 1 //fino all'autenticazione
     			]
-    	); //si potrebbe passare anche un array di array per inserire diversi record
+    	); //si potrebbe passare anche un array di array per inserire diversi record*/
+    		
+    	//eleoquent metodo 2 utilizzando il fillable
+    	/*$res=Album::create( //bisogna dire nel model quali sono i valori $fillable
+    			[
+    					'album_name'=>request()->input('name'),
+    					'description'=>request()->input('description'),
+    					'user_id'=> 1 //fino all'autenticazione
+    			]
+    			); //si potrebbe passare anche un array di array per inserire diversi record*/
+    	
+    	$album=new Album();
+    	$album->album_name=request()->input('name');
+    	$album->description=request()->input('description');
+    	$album->user_id=1;
+    	
+    	$res=$album->save();
     	
     	$messaggio = $res ? 'Album '.$data['name'].' creato!':'Album '.$data['name'].' non creato!';
     	session()->flash('message',$messaggio);
@@ -133,12 +163,20 @@ class AlbumsController extends Controller
     	//utilizziamo il query builder
     	//usiamo la facade DB
     	
-    	$res = DB::table('albums')->where('id',$id)->update(
+    	//$res = DB::table('albums')->where('id',$id)->update(
+    	//eloquent metodo1
+    	/*$res=Album::where('id',$id)->update(
     		[
     				'album_name'=>request()->input('name'),
     				'description'=>request()->input('description')
     		]		
-    	);
+    	);*/
+    	//eloquent metodo 2 con find
+    	$album=Album::find($id);
+    	$album->album_name=request()->input('name');
+    	$album->description=request()->input('description');
+    	
+    	$res=$album->save();
     	
     	$messaggio = $res ? 'Album con id '.$id.' aggiornato!':'Album con id '.$id.' non aggiornato!'; 
     	session()->flash('message',$messaggio);
