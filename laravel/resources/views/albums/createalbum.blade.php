@@ -10,7 +10,7 @@ File:createalbum.blade.php
 @section('title',$title)
 @section('content')
 <h1>Create a New Album</h1>
-<form action="{{route('album.save')}}" method="POST">
+<form action="{{route('album.save')}}" method="POST" enctype="multipart/form-data">
 {{csrf_field()}}
 
 <div class="form-group">
@@ -23,6 +23,7 @@ File:createalbum.blade.php
 <textarea name="description" id="description" class="form-control"  placeholder="Description">
 </textarea>
 </div>
+@include('albums.partials.fileupload')
 <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 @endsection

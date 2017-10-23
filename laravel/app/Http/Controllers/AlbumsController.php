@@ -53,6 +53,7 @@ class AlbumsController extends Controller
     	}
     	
     	$albums=$queryBuilder->get();
+    	
     	return view('albums.albums',['title'=>'Pagina Album','albums'=>$albums]);
     	
     }
@@ -101,10 +102,12 @@ class AlbumsController extends Controller
     }
     
     public function create(){
-    	return view('albums.createalbum',['title'=>'Pagina Create Album']);
+    	$album=new Album();
+    	
+    	return view('albums.createalbum',['title'=>'Pagina Create Album', 'album'=>$album]);
     }
     
-    public function save(){
+    public function save(){ //INSERISCE NUOVO
     	$data= request()->only(['name','description']); 
     	/*$data['user_id']=1; 
     	$sql='INSERT INTO albums (album_name,description,user_id)';
@@ -140,16 +143,47 @@ class AlbumsController extends Controller
     	$album=new Album();
     	$album->album_name=request()->input('name');
     	$album->description=request()->input('description');
+    	$album->album_thumb='';
     	$album->user_id=1;
-    	
+
     	$res=$album->save();
+    	
+    	if($res){
+    		if($this->processFile($album->id,request(),$album)){
+    			$album->save();
+    		}
+    	}
     	
     	$messaggio = $res ? 'Album '.$data['name'].' creato!':'Album '.$data['name'].' non creato!';
     	session()->flash('message',$messaggio);
     	return redirect()->route('albums'); //è una response non è una redirect vera e propria
     }
     
-    public function store($id,Request $req){
+    
+    public function processFile($id,Request $req,&$album){ //album è passato per riferimento
+    	if (!$req->hasFile('album_thumb')){
+    		return false;
+    	}
+    	//if ($req->hasFile('album_thumb')){
+    		$file=$req->file('album_thumb');
+    		//il metodo store torna una stringa che è il nome del file. 'public' indica la cartella dove memorizzare le immagini
+    		//$fileName=$file->store(env('ALBUM_THUMB_DIR'),'public'); //punta a storage/images/album_thumbs l'helper env mi permette di fare questo //PRIMO METODO
+    		if(!$file->isValid()){
+    			return false;
+    		}
+    			$fileName=$id.'.'.$file->extension();
+    			$file->storeAs(env('ALBUM_THUMB_DIR'),$fileName);
+    			 
+    			//$album->album_thumb=$fileName;
+    			$album->album_thumb = env('ALBUM_THUMB_DIR') . $fileName;
+    			//dd($album->album_thumb);
+    		//}
+    		return true; //CI STA UN FILE ALLEGATO QUINDI PROCESSFILE DEVE INVIARE TRUE
+    	
+    	//}
+    }
+    
+    public function store($id,Request $req){ //SALVA MOD
     	/*$data = request()->only(['name','description']);
     	
     	$data['id']=$id;
@@ -177,20 +211,7 @@ class AlbumsController extends Controller
     	$album->description=request()->input('description');
     	$album->user_id=1;
     	
-    	if ($req->hasFile('album_thumb')){
-    		$file=$req->file('album_thumb');
-    		//il metodo store torna una stringa che è il nome del file. 'public' indica la cartella dove memorizzare le immagini
-    		//$fileName=$file->store(env('ALBUM_THUMB_DIR'),'public'); //punta a storage/images/album_thumbs l'helper env mi permette di fare questo //PRIMO METODO
-    		if($file->isValid()){
-    			$fileName=$id.'.'.$file->extension();
-    			$file->storeAs(env('ALBUM_THUMB_DIR'),$fileName);    			
-    			
-    			//$album->album_thumb=$fileName;
-    			$album->album_thumb = env('ALBUM_THUMB_DIR') . $fileName;
-    			//dd($album->album_thumb);
-    		}
-    		
-    	}
+    	$this->processFile($id,$req,$album);
     	
     	$res=$album->save();
     	

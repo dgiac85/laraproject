@@ -24,13 +24,7 @@ File:edit.blade.php
 	<textarea name="description" id="description" class="form-control"  placeholder="Description">{{$album->description}}
 	</textarea>
 </div>
-@if($album->album_thumb)
-	<div class="form-group">
-		<label for="">Thumbnail</label>
-		<input type="file" name="album_thumb" id="album_thumb" class="form-control">
-		<img src="{{$album->album_thumb}}" title="{{$album->album_thumb}}" alt="{{$album->album_thumb}}">
-	</div>
-@endif
+@include('albums.partials.fileupload')
 <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 @endsection

@@ -1,0 +1,16 @@
+<?php
+/*
+Author:Giacomo Delfini
+Date:23 ott 2017
+Time:23:32:22
+File:fileupload.blade.php
+*/
+
+@if($album->album_thumb)
+<div class="form-group">
+<label for="">Thumbnail</label>
+<input type="file" name="album_thumb" id="album_thumb" class="form-control">
+<img src="{{$album->album_thumb}}" title="{{$album->album_thumb}}" alt="{{$album->album_thumb}}">
+</div>
+@endif
+?>
