@@ -23,7 +23,7 @@ File:albums.blade.php
 	@foreach($albums as $album)
 		<li class="list-group-item justify-content-between">
 			@if($album->album_thumb)
-					<img src="{{$album->album_thumb}}" title="{{$album->album_thumb}}" alt="{{$album->album_thumb}}">
+					<img src="{{asset($album->path)}}" alt="{{$album->album_thumb}}">
 				@endif
 			<p>{{$album->id}} {{$album->album_name}}</p>
 			<div>

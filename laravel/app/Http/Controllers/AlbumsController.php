@@ -175,6 +175,22 @@ class AlbumsController extends Controller
     	$album=Album::find($id);
     	$album->album_name=request()->input('name');
     	$album->description=request()->input('description');
+    	$album->user_id=1;
+    	
+    	if ($req->hasFile('album_thumb')){
+    		$file=$req->file('album_thumb');
+    		//il metodo store torna una stringa che è il nome del file. 'public' indica la cartella dove memorizzare le immagini
+    		//$fileName=$file->store(env('ALBUM_THUMB_DIR'),'public'); //punta a storage/images/album_thumbs l'helper env mi permette di fare questo //PRIMO METODO
+    		if($file->isValid()){
+    			$fileName=$id.'.'.$file->extension();
+    			$file->storeAs(env('ALBUM_THUMB_DIR'),$fileName);    			
+    			
+    			//$album->album_thumb=$fileName;
+    			$album->album_thumb = env('ALBUM_THUMB_DIR') . $fileName;
+    			//dd($album->album_thumb);
+    		}
+    		
+    	}
     	
     	$res=$album->save();
     	
@@ -184,3 +200,4 @@ class AlbumsController extends Controller
     }
     
 }
+

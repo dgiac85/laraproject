@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => 'public', //in questo modo dico che lo storage è il public VEDI SOTTO
+    //BISOGNA ANDARE IN SSH DI VAGRANT e fare questa istruzione:php artisan storage:link
 
     /*
     |--------------------------------------------------------------------------
