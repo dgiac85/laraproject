@@ -233,3 +233,16 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.
 
 !ENTRY org.eclipse.core.resources 2 10035 2017-10-24 00:22:14.058
 !MESSAGE The workspace will exit with unsaved changes in this session.
+!SESSION 2017-10-28 14:06:24.631 -----------------------------------------------
+eclipse.buildId=4.6.1.M20160907-1200
+java.version=1.8.0_40
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=it_IT
+Framework arguments:  -product org.eclipse.epp.package.php.product -keyring /Users/Giacomo/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.php.product -keyring /Users/Giacomo/.eclipse_keyring
+
+!ENTRY org.eclipse.core.resources 2 10035 2017-10-28 14:06:48.078
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.core.net 1 0 2017-10-28 14:06:48.438
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences

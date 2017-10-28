@@ -1,0 +1,42 @@
+<?php
+/*
+Author:Giacomo Delfini
+Date:28 ott 2017
+Time:16:54:33
+File:albumimages.blade.php
+*/
+
+?>
+@extends('templates.default')
+<table class="table table-striped">
+    <tr>
+        <th> CREATED DATE</th>
+        <th> TITLE</th>
+        <th> ALBUM</th>
+        <th> THUMBNAIL</th>
+        <th>&nbsp;</th>
+    </tr>
+    @forelse($images as $image)
+     
+        <tr>
+             <td>{{$image->created_at->format('d/m/Y H:i')}}</td>
+            <td>{{$image->name}}</td>
+            <td><a href="#">{{$album->album_name}}</a> </td>
+            <td>
+              <img width="100" src="#">
+            </td>
+            <td class="row">
+                <a title="Edit pic" href="#" class="btn btn-sm btn-primary">
+                    <span class="fa fa-pencil"></span>
+                </a>&nbsp;
+
+                <a title="Delete pic" href="#" class="btn  btn-sm btn-danger">
+                    <span class="fa fa-minus"></span>
+                </a>
+            </td>
+        </tr>
+        @empty
+            <tr><td colspan="6">
+                    No images found
+            </td></tr>
+        @endforelse

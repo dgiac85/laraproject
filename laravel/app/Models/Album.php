@@ -9,11 +9,12 @@ File:Album.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Photo;
 
 class Album extends Model {
 	//albums
 	protected $table= 'albums'; //nel caso la classe si chiama in modo differente La tabella in mysql si chiama albums
-	
+	protected $orimaryKey='$id';
 	protected $fillable = ['album_name','description','user_id'];
 	
 	
@@ -25,6 +26,13 @@ class Album extends Model {
 		}
 		
 		return $url;
+	
+	}
+	
+	public function photos(){ //in questo modo dico che questo album ha tante foto
+		
+		return $this->hasMany(Photo::class,'album_id','id'); //la view ritorna le foto di un determinato album
+		
 	}
 	 
 	

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Album;
 use DB;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Photo;
 
 class AlbumsController extends Controller
 {
@@ -43,8 +45,8 @@ class AlbumsController extends Controller
     	//usiamo la facade DB
     	
     	//$queryBuilder=DB::table('albums')->orderBy('id','DESC');
-    	//con eloquent
-    	$queryBuilder=Album::orderBy('id','DESC');
+    	//con eloquent //withCount fa il conteggio delle photo associate all album mediante la relazione hasmany (vedi il Model album)
+    	$queryBuilder=Album::orderBy('id','DESC')->withCount('photos');
     	if ($request->has('id')){
     		$queryBuilder->where('id','=',$request->input('id'));
     	}
@@ -53,13 +55,15 @@ class AlbumsController extends Controller
     	}
     	
     	$albums=$queryBuilder->get();
+    	//dd($albums);
     	
     	return view('albums.albums',['title'=>'Pagina Album','albums'=>$albums]);
     	
     }
     
     //FUNZIONE DI CANCELLAZIONE
-    public function delete($id){
+    public function delete(Album $album){
+    	
     	
     	/*GREZZE$sql="DELETE from albums where id=:id";
     	return DB::delete($sql,['id'=>$id]); //se tutto va bene ritorna 1
@@ -71,12 +75,24 @@ class AlbumsController extends Controller
     	//usiamo la facade DB
     	 
     	//$res=DB::table('albums')->where('id',$id)->delete(); //ricorda è una chiamata ad un metodo statico
-    	//Eloquent metodo1
+    	//#############################################################Eloquent metodo1
     	//$res=Album::where('id',$id)->delete();
-    	//Eloquent metodo 2
-    	$res=Album::find($id)->delete();
+    	//############################################################Eloquent metodo 2
+    	//$res=Album::find($id)->delete();
     	
-    	return ''.$res; //ritorniamo un valore di tipo stringa
+    	//return ''.$res; //ritorniamo un valore di tipo stringa
+    	
+    	// cancellazionde anche da storage
+    	$thumbNail = $album->album_thumb;
+    	$disk = config('filesystems.default');
+    	 
+    	$res = $album->delete(); //prima cancella e poi fa la cancellazione dell'immagine dallo storage
+    	if($res){
+    		if($thumbNail && Storage::disk($disk)->has($thumbNail))   {
+    			Storage::disk($disk)->delete($thumbNail);
+    		}
+    	}
+    	return '' . $res;
     }
     
     //FUNZIONE DI VISUALIZZAZIONE
@@ -97,7 +113,8 @@ class AlbumsController extends Controller
     	
     	//con Eloquent
     	$album=Album::find($id);
-    
+    	
+    	//dd($album->album_thumb);
     	return view('albums.edit',['album'=>$album,'title'=>'Pagina Edit Album']);
     }
     
@@ -218,6 +235,14 @@ class AlbumsController extends Controller
     	$messaggio = $res ? 'Album con id '.$id.' aggiornato!':'Album con id '.$id.' non aggiornato!'; 
     	session()->flash('message',$messaggio);
     	return redirect()->route('albums'); //è una response non è una redirect vera e propria
+    }
+    
+    public function getImages(Album $album){
+    	$images = Photo::where('album_id',$album->id )->get();//latest()->paginate(env('IMG_PER_PAGE'));
+    	//$images=  $album->photos;
+    
+    	return view('images.albumimages',compact('album','images'));
+    	 
     }
     
 }
